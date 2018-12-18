@@ -5,5 +5,9 @@ config info
     IDEA  Maven
 
 
+Maven
+-Dmaven.test.skip=true -Dmaven.yuicompressor.skip=true clean compile package install
+
+
 
 
