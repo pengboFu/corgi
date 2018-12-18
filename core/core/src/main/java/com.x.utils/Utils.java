@@ -3,9 +3,11 @@ package com.x.utils;
 import com.x.contract.ErrorCodes;
 import com.x.contract.ServiceException;
 
+import javax.servlet.http.HttpServletRequest;
 import java.math.BigDecimal;
 import java.util.Collection;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * Created by fpb on 2018/12/17.
@@ -131,5 +133,54 @@ public class Utils {
             return;
         }
         dest.addAll(source);
+    }
+    /**
+     * 获取UUID
+     * @return
+     */
+    public static String getUUID(){
+        return UUID.randomUUID().toString().replaceAll("\\-", "");
+    }
+
+    /**
+     * 判断当前请求是否是微信webview请求。
+     *
+     * @param request
+     * @return
+     */
+    public static boolean isInWX(HttpServletRequest request) {
+        String ua = request.getHeader("user-agent");
+        return ua.contains("MicroMessenger");
+    }
+
+    /**
+     * 判断当前请求是否是支付宝webview请求。
+     * @param request
+     * @return
+     */
+    public static boolean isInAlipay(HttpServletRequest request) {
+        String ua = request.getHeader("user-agent");
+        return ua.contains("AlipayClient");
+    }
+
+    /**
+     * 手机号格式化
+     * @param mobilePhoneNumber
+     * @param pattern
+     * @return
+     */
+    public static String formatPhoneForShow(String mobilePhoneNumber, String pattern){
+        if (Utils.isEmptyString(mobilePhoneNumber)) {
+            return "";
+        }
+        char s[] = mobilePhoneNumber.toCharArray();
+        StringBuilder sb = new StringBuilder();
+        for(int i = 0,j = 0 ; i < s.length ; i++){
+            sb.append(s[i]);
+            if(i == 2 || i == 6){
+                sb.append(pattern);
+            }
+        }
+        return sb.toString();
     }
 }
