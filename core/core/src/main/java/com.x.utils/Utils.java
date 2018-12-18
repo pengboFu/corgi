@@ -5,6 +5,7 @@ import com.x.contract.ServiceException;
 
 import java.math.BigDecimal;
 import java.util.Collection;
+import java.util.List;
 
 /**
  * Created by fpb on 2018/12/17.
@@ -119,5 +120,16 @@ public class Utils {
         }
         return sb.toString();
     }
-
+    /**
+     * 忽略空集合添加集合
+     * @param dest   目的集合
+     * @param source 源集合
+     * @param <T>    集合参数的类型
+     */
+    private static <T> void listAddAllAvoidNPE(List<T> dest, List<T> source) {
+        if (source == null) {
+            return;
+        }
+        dest.addAll(source);
+    }
 }
