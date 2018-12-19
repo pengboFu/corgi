@@ -1,4 +1,4 @@
-package com.x.contract;
+package com.x.core.contract;
 
 /**
  * Created by fpb on 2018/12/17.

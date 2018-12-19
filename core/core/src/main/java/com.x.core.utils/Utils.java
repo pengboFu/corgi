@@ -1,13 +1,15 @@
-package com.x.utils;
+package com.x.core.utils;
 
-import com.x.contract.ErrorCodes;
-import com.x.contract.ServiceException;
+import com.x.core.contract.ErrorCodes;
+import com.x.core.contract.ServiceException;
 
 import javax.servlet.http.HttpServletRequest;
 import java.math.BigDecimal;
-import java.util.Collection;
-import java.util.List;
-import java.util.UUID;
+import java.net.Inet6Address;
+import java.net.InetAddress;
+import java.net.NetworkInterface;
+import java.net.SocketException;
+import java.util.*;
 
 /**
  * Created by fpb on 2018/12/17.
@@ -183,4 +185,36 @@ public class Utils {
         }
         return sb.toString();
     }
+
+    /**
+     * 获取本机所有IP
+     *
+     * @return map.key: 网卡名称, map.value: ip地址
+     */
+    public static Map<String, String> getAllLocalHostIP() {
+        Map<String, String> res = new HashMap<String, String>();
+        Enumeration netInterfaces;
+        try {
+            netInterfaces = NetworkInterface.getNetworkInterfaces();
+            InetAddress ip = null;
+            while (netInterfaces.hasMoreElements()) {
+                NetworkInterface ni = (NetworkInterface) netInterfaces
+                        .nextElement();
+                System.out.println("---Name---:" + ni.getName());
+                Enumeration nii = ni.getInetAddresses();
+                while (nii.hasMoreElements()) {
+                    ip = (InetAddress) nii.nextElement();
+                    if (ip instanceof Inet6Address || ip.isLoopbackAddress()) {
+                        continue;
+                    }
+                    res.put(ni.getName(), ip.getHostAddress());
+                    System.out.println("本机的ip=" + ip.getHostAddress());
+                }
+            }
+        } catch (SocketException e) {
+            e.printStackTrace();
+        }
+        return res;
+    }
+
 }
